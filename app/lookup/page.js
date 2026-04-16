@@ -42,10 +42,14 @@ export default function LookupPage() {
     }
   };
 
-  const downloadPdf = () => {
+  const downloadPdf = async () => {
     if (!result) return;
-    const { doc, filename } = generatePdfReport(result);
-    doc.save(filename);
+    try {
+      const { doc, filename } = await generatePdfReport(result);
+      doc.save(filename);
+    } catch (e) {
+      alert("PDF 생성 중 오류: " + e.message);
+    }
   };
 
   if (result) return <ResultView result={result} onDownload={downloadPdf} onBack={() => setResult(null)} />;
