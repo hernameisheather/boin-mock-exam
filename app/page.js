@@ -74,10 +74,14 @@ export default function HomePage() {
     }
   };
 
-  const downloadPdf = () => {
+  const downloadPdf = async () => {
     if (!result) return;
-    const { doc, filename } = generatePdfReport(result);
-    doc.save(filename);
+    try {
+      const { doc, filename } = await generatePdfReport(result);
+      doc.save(filename);
+    } catch (e) {
+      alert("PDF 생성 중 오류: " + e.message);
+    }
   };
 
   if (stage === "login") return <LoginView {...{studentId, setStudentId, studentName, setStudentName, error, handleLogin}} />;
